@@ -23,7 +23,7 @@ export default [
       format: "iife",
       sourcemap: true,
     },
-    name: "scaffold",
+    name: "scraptor",
   },
   {
     input,
@@ -32,7 +32,7 @@ export default [
       format: "iife",
       sourcemap: true,
     },
-    name: "scaffold",
+    name: "scraptor",
     plugins: plugins.concat([uglify()]),
   },
   {

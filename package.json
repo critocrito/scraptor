@@ -1,5 +1,5 @@
 {
-  "name": "js-lib-scaffold",
+  "name": "scraptor",
   "version": "0.0.0",
   "description": "A scaffolding repository to start a new JS libraries for NodeJS or the browser.",
   "main": "_dist/main.js",
@@ -32,15 +32,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/critocrito/js-lib-scaffold.git"
+    "url": "https://gitlab.com/critocrito/scraptor.git"
   },
   "keywords": [],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://gitlab.com/critocrito/js-lib-scaffold/issues"
+    "url": "https://gitlab.com/critocrito/scraptor/issues"
   },
-  "homepage": "https://gitlab.com/critocrito/js-lib-scaffold#Readme.md",
+  "homepage": "https://gitlab.com/critocrito/scraptor#Readme.md",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
