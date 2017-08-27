@@ -59,13 +59,10 @@ spec. Tags in the commit message are used to generate a
 
 There are the following `npm` scripts:
 
--   `watch` - Run a watcher for the tests.
+-   `build` - Build the whole bundle. This lints, tests, documents and compiles
+    the while package.
 -   `test` - Run all specs in `test/`.
--   `lint-docs` - Lint the [JSDoc](http://usejsdoc.org) docstrings using
-    [Documentation](https://github.com/documentationjs/documentation).
--   `lint-src` - Use [ESLint](https://eslint.org/) and
-    [Prettier](https://github.com/prettier/prettier) to enforce the coding
-    style.
+-   `watch` - Run a watcher for the tests.
 -   `lint` - Run `lint-docs` and `lint-src`.
 -   `fix` - Automatically fix linting errors in the JavaScript code.
 -   `clean` - Remove all compiled bundles.
@@ -73,16 +70,19 @@ There are the following `npm` scripts:
     [Documentation](https://github.com/documentationjs/documentation).
 -   `compile` - Compile the ES6 sources using [Babel](https://babeljs.io/) using
     [rollup](https://rollupjs.org/). Runs the `clean` target before compilation.
--   `build` - Build the whole bundle. This lints, tests, documents and compiles
-    the while package.
 -   `release` - Create a new version and update the changelog based on the
     conventional commit message types.
 -   `release-candidate` - Create a new release candidate.
--   `lint-check` - Test that ESLint and Prettier are in alignment.
+-   `check` - Test that ESLint and Prettier are in alignment.
 -   `coverage` - Show the code coverage of the unit tests.
 -   `publish` - Create a signed [Git
     tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and publish to the
     GIT origin remote and the [NPM repository](https://www.npmjs.com/).
+-   `lint-docs` - Lint the [JSDoc](http://usejsdoc.org) docstrings using
+    [Documentation](https://github.com/documentationjs/documentation).
+-   `lint-src` - Use [ESLint](https://eslint.org/) and
+    [Prettier](https://github.com/prettier/prettier) to enforce the coding
+    style.
 
 ## API
 

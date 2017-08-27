@@ -4,5 +4,5 @@
   ],
   "sourceMap": false,
   "instrument": false,
-  "exclude": "_dist"
+  "exclude": ["_dist", "test"]
 }
