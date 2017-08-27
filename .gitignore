@@ -3,3 +3,5 @@ npm-*.log
 _dist
 .npmrc
 .eslintcache
+.nyc_output
+coverage

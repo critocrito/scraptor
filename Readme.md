@@ -79,6 +79,7 @@ There are the following `npm` scripts:
     conventional commit message types.
 -   `release-candidate` - Create a new release candidate.
 -   `lint-check` - Test that ESLint and Prettier are in alignment.
+-   `coverage` - Show the code coverage of the unit tests.
 -   `publish` - Create a signed [Git
     tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and publish to the
     GIT origin remote and the [NPM repository](https://www.npmjs.com/).
