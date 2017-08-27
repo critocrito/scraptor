@@ -14,7 +14,7 @@
   "scripts": {
     "build": "for i in lint test docs compile; do npm run $i -s; done",
     "lint": "for i in src docs; do npm run lint-$i -s; done",
-    "test": "cross-env NODE_ENV=test mocha -c -r $npm_package_config_reporter --compilers js:babel-register -r babel-polyfill -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "test": "cross-env NODE_ENV=test mocha -c -r $npm_package_config_reporter --compilers js:babel-register -r source-map-support/register -r babel-polyfill -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
     "docs": "documentation lint $npm_package_config_srcDir/**/*.js && documentation readme --shallow --readme-file Readme.md -s \"API\" lib/**/*.js && doctoc --maxlevel 3 --notitle Readme.md",
     "precompile": "npm run clean -s",
     "compile": "rollup -c",
