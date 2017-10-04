@@ -2,7 +2,7 @@
   "presets": ["es2015"],
   "env": {
     "test": {
-      "plugins": ["istanbul", "transform-regenerator", "transform-async-functions"]
+      "plugins": ["istanbul"]
     }
   }
 }
