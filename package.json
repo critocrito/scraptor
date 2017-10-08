@@ -1,25 +1,23 @@
 {
   "name": "scraptor",
   "version": "0.0.0",
-  "description": "A scaffolding repository to start a new JS libraries for NodeJS or the browser.",
+  "description": "My way to use Chrome headless and scrape.",
   "main": "_dist/index.js",
-  "browser": "_dist/browser.js",
   "module": "lib/index.js",
   "config": {
     "srcDir": "lib",
     "testDir": "test",
-    "distDir": "_dist",
-    "reporter": "progress"
+    "distDir": "_dist"
   },
   "scripts": {
     "precommit": "lint-staged",
-    "commitmsg": "validate-commit-msg",
+    "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
     "check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "prepublishOnly": "npm run build",
     "publish": "git push --follow-tags origin master",
     "watch": "npm run compile -- -w",
-    "test": "cross-env NODE_ENV=test mocha -c --reporter $npm_package_config_reporter --compilers js:babel-register --require babel-polyfill --require test/helpers.js $npm_package_config_testDir/**/*.spec.js",
-    "coverage": "cross-env NODE_ENV=test nyc npm test",
+    "test": "cross-env NODE_ENV=test mocha -c -R progress --compilers js:babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
+    "coverage": "nyc npm test",
     "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
     "fix": "npm run lint -- --fix",
     "precompile": "npm run clean -s",
@@ -30,7 +28,10 @@
     "release-candidate": "npm run release -- --prerelease \"rc\""
   },
   "repository": "https://github.com/critocrito/scraptor.git",
-  "keywords": [],
+  "keywords": [
+    "browsing",
+    "scraping"
+  ],
   "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
   "bugs": "https://github.com/critocrito/scraptor/issues",
@@ -54,12 +55,11 @@
     "prettier": "^1.5.3",
     "rimraf": "^2.6.1",
     "sinon": "^3.2.1",
-    "source-map-support": "^0.4.16",
     "standard-version": "^4.2.0",
     "validate-commit-msg": "^2.13.1"
   },
   "dependencies": {
-    "combinators-p": "^0.4.0",
+    "combinators-p": "^0.5.0",
     "lodash": "^4.17.4",
     "puppeteer": "^0.11.0"
   }
