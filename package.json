@@ -1,6 +1,6 @@
 {
   "name": "scraptor",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "My way to use Chrome headless and scrape.",
   "main": "_dist/index.js",
   "module": "lib/index.js",
