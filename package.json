@@ -28,9 +28,9 @@
     "test:watch": "yarn test -w"
   },
   "dependencies": {
-    "dashp": "^0.8.1",
+    "dashp": "^0.10.1",
     "lodash": "^4.17.4",
-    "puppeteer": "^0.11.0"
+    "puppeteer": "^1.11.0"
   },
   "devDependencies": {
     "@build-chores/babel-preset": "^0.7.0",
@@ -39,6 +39,8 @@
     "@build-chores/staged": "^0.7.0",
     "@build-chores/test": "^0.7.0",
     "ava": "1.0.0-rc.2",
+    "get-port": "^4.0.0",
+    "http-server": "^0.11.1",
     "husky": "^1.2.1",
     "rimraf": "^2.6.1",
     "standard-version": "^4.4.0"
