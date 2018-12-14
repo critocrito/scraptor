@@ -1,66 +1,53 @@
 {
   "name": "scraptor",
-  "version": "0.1.0",
   "description": "My way to use Chrome headless and scrape.",
-  "main": "_dist/index.js",
-  "module": "lib/index.js",
-  "config": {
-    "srcDir": "lib",
-    "testDir": "test",
-    "distDir": "_dist"
-  },
-  "scripts": {
-    "precommit": "lint-staged",
-    "commitmsg": "! git rev-parse --abbrev-ref HEAD | grep -q master || validate-commit-msg",
-    "check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
-    "prepublishOnly": "npm run build",
-    "publish": "git push --follow-tags origin master",
-    "watch": "npm run compile -- -w",
-    "test": "cross-env NODE_ENV=test mocha -c -R progress --compilers js:babel-register -r test/helpers.js $npm_package_config_testDir/**/*.spec.js",
-    "coverage": "nyc npm test",
-    "lint": "eslint --cache $npm_package_config_testDir $npm_package_config_srcDir",
-    "fix": "npm run lint -- --fix",
-    "precompile": "npm run clean -s",
-    "compile": "babel -d $npm_package_config_distDir $npm_package_config_srcDir",
-    "clean": "rimraf $npm_package_config_distDir",
-    "build": "npm run lint -s && npm run test -s && npm run compile -s",
-    "release": "npm run build -s && standard-version -i CHANGELOG.md -m \"chore(release): Bumped to version %s.\" --sign",
-    "release-candidate": "npm run release -- --prerelease \"rc\""
-  },
-  "repository": "https://github.com/critocrito/scraptor.git",
-  "keywords": [
-    "browsing",
-    "scraping"
-  ],
-  "author": "Christo <christo@cryptodrunks.net>",
   "license": "GPL-3.0",
-  "bugs": "https://github.com/critocrito/scraptor/issues",
+  "author": "Christo <christo@cryptodrunks.net>",
   "homepage": "https://github.com/critocrito/scraptor#README.md",
-  "devDependencies": {
-    "@sugarcube/eslint-config-sugarcube": "^0.2.0",
-    "babel-cli": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-istanbul": "^4.1.4",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-register": "^6.24.1",
-    "chai": "^4.1.0",
-    "chai-as-promised": "^7.1.1",
-    "cross-env": "^5.0.5",
-    "eslint": "^4.3.0",
-    "husky": "^0.14.3",
-    "jsverify": "^0.8.2",
-    "lint-staged": "^4.2.3",
-    "mocha": "^3.4.2",
-    "nyc": "^11.1.0",
-    "prettier": "^1.5.3",
-    "rimraf": "^2.6.1",
-    "sinon": "^3.2.1",
-    "standard-version": "^4.2.0",
-    "validate-commit-msg": "^2.13.1"
+  "repository": "https://github.com/critocrito/scraptor.git",
+  "bugs": "https://github.com/critocrito/scraptor/issues",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn lint && yarn test && yarn compile",
+    "clean": "rimraf dist",
+    "precompile": "yarn clean",
+    "compile": "babel -s -D -d dist src",
+    "compile:watch": "yarn compile -w",
+    "fix": "yarn lint --fix",
+    "lint": "eslint src test",
+    "publish": "git push --follow-tags origin master",
+    "prepublishOnly": "yarn build",
+    "prerelease": "yarn build",
+    "release": "standard-version -i CHANGELOG.md -m \"chore(release): Bumped to version %s.\" --sign",
+    "test": "ava",
+    "test:coverage": "nyc yarn test",
+    "test:watch": "yarn test -w"
   },
   "dependencies": {
     "dashp": "^0.8.1",
     "lodash": "^4.17.4",
     "puppeteer": "^0.11.0"
+  },
+  "devDependencies": {
+    "@build-chores/babel-preset": "^0.7.0",
+    "@build-chores/commitlint": "^0.7.0",
+    "@build-chores/eslint-config-lint": "^0.7.0",
+    "@build-chores/staged": "^0.7.0",
+    "@build-chores/test": "^0.7.0",
+    "ava": "1.0.0-rc.2",
+    "husky": "^1.2.1",
+    "rimraf": "^2.6.1",
+    "standard-version": "^4.4.0"
+  },
+  "keywords": [
+    "browsing",
+    "scraping"
+  ],
+  "ava": {
+    "require": "@build-chores/test"
   }
 }

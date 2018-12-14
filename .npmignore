@@ -1,7 +1,0 @@
-test/
-npm-*.log
-yarn-*.log
-.npmrc
-.babelrc
-.eslint*
-.gitlab*

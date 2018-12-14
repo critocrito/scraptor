@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "! git rev-parse --abbrev-ref HEAD | grep -q master || lint-staged -c @build-chores/staged",
+    "commit-msg": "! git rev-parse --abbrev-ref HEAD | grep -q master || commitlint -E HUSKY_GIT_PARAMS"
+  }
+}
