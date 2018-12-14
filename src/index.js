@@ -1,13 +1,13 @@
 // export * from "./browser";
-import {curry} from "lodash/fp";
 import {ofP} from "dashp";
+import {curry2} from "@critocrito/curry";
 import puppeteer from "puppeteer";
 
-const browse = curry(async (url, page) => {
+const browse = curry2("browse", async (url, page) => {
   await page.goto(url);
 });
 
-const screenshot = curry(async (target, page) => {
+const screenshot = curry2("screenshot", async (target, page) => {
   await page.screenshot({path: target, fullPage: true});
 });
 
