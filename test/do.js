@@ -11,11 +11,13 @@ test.after((t) => t.context.server.close());
 
 test("browse to a page", async (t) => {
   const {port} = t.context;
-  await Do(function* simpleTest({browse}) {
+  const html = await Do(function* simpleTest({browse}) {
     const body = yield browse(`http://localhost:${port}/test.html`);
     const {window} = new JSDOM(body);
     t.is("Hello World!", window.document.querySelector("h1").textContent);
   });
+  const {window} = new JSDOM(html);
+  t.is("Hello World!", window.document.querySelector("h1").textContent);
 });
 
 test("fill text into an input field", async (t) => {

@@ -39,11 +39,13 @@ export const Do = async (G, {headless} = {headless: true}) => {
   const generator = G(api);
   let data = "";
 
+  const cleanHtml = (html) => html.replace("\n", "").trim();
+
   const chain = async (nextG) => {
-    const {done, value} = await nextG.next(data.replace("\n", "").trim());
+    const {done, value} = await nextG.next(cleanHtml(data));
     if (done) {
       await browser.close();
-      return Promise.resolve();
+      return Promise.resolve(cleanHtml(data));
     }
     await value(page);
     /* istanbul ignore next */
