@@ -1,26 +1,22 @@
-import {ofP} from "dashp";
-import {curry2, curry3} from "@critocrito/curry";
+import {ofP, collectP} from "dashp";
 import puppeteer from "puppeteer";
 
-const browse = curry2("browse", async (url, page) => {
-  await page.goto(url);
-});
+const waitUntilLoaded = (opts = {}) => (page) =>
+  page.waitForNavigation(Object.assign({waitUntil: "load"}, opts));
 
-const untilSelector = (
-  selector,
-  opts = {timeout: 30000, visible: false, hidden: false},
-) => async (page) => {
-  await page.waitForSelector(selector, opts);
+const browse = (url) => (page) => page.goto(url);
+
+const waitUntil = (cond, opts = {timeout: 30000}) => (page) =>
+  page.waitFor(cond, opts);
+
+const screenshot = (target) => async (page) => {
+  await page.screenshot({path: target, fullPage: true});
 };
 
-const screenshot = curry2("screenshot", async (target, page) => {
-  await page.screenshot({path: target, fullPage: true});
-});
-
-const input = curry3("input", async (selector, value, page) => {
-  /* istanbul ignore next */
-  await page.$eval(
+const input = (selector, value) => (page) =>
+  page.$eval(
     selector,
+    /* istanbul ignore next */
     (el, val) => {
       el.value = ""; // eslint-disable-line no-param-reassign
       el.value = val; // eslint-disable-line no-param-reassign
@@ -28,13 +24,30 @@ const input = curry3("input", async (selector, value, page) => {
     },
     value,
   );
-});
+
+const scroll = (selector, opts) => async (page) => {
+  const {times, timeout} = Object.assign({times: 1, timeout: 1000}, opts);
+  const scroller = async () => {
+    await page.$eval(
+      selector,
+      /* istanbul ignore next */
+      (el) => {
+        el.scrollBy(0, window.innerHeight);
+      },
+    );
+    await page.waitFor(timeout);
+  };
+  const range = [...Array(times).keys()];
+  await collectP(scroller, range);
+};
 
 const api = {
   browse,
-  untilSelector,
+  waitUntil,
+  waitUntilLoaded,
   screenshot,
   input,
+  scroll,
 };
 
 export const Do = async (G, {headless} = {headless: true}) => {

@@ -1,3 +1,6 @@
 {
-  "extends": ["@build-chores/lint"]
+  "extends": ["@build-chores/lint"],
+  "env": {
+    "browser": true
+  }
 }

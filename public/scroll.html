@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <style type="text/css">
+      #infinite-list {
+          /* We need to limit the height and show a scrollbar */
+          width: 200px;
+          height: 600px;
+          overflow: auto;
+
+          /* Optional, only to check that it works with margin/padding */
+          margin: 30px;
+          padding: 20px;
+      }
+      /* Optional eye candy below: */
+      li {
+          padding: 20px;
+          list-style-type: none;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="infinite-list">
+    </ul>
+  </body>
+  <script>
+    let listElm = document.querySelector("#infinite-list");
+
+    // Add 20 items.
+    let nextItem = 1;
+    const loadMore = function() {
+      for (let i = 0; i < 20; i++) {
+        const item = document.createElement("li");
+        item.innerText = "Item " + nextItem++;
+        listElm.appendChild(item);
+      }
+    }
+
+    // Detect when scrolled to bottom.
+    listElm.addEventListener("scroll", function() {
+      if (listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight) {
+        loadMore();
+      }
+    });
+
+    // Initially load some items.
+    window.onload = () => loadMore();
+  </script>
+</html>

@@ -1,3 +1,4 @@
+/* eslint no-shadow: off */
 import test from "ava";
 import {JSDOM} from "jsdom";
 import server from "./helpers/server";
@@ -35,13 +36,63 @@ test("fill text into an input field", async (t) => {
 
 test("can wait until a selector appears", async (t) => {
   const {port} = t.context;
-  const html = await Do(function* waitForSelector({browse, untilSelector}) {
+  const html = await Do(function* waitForSelector({browse, waitUntil}) {
     yield browse(`http://localhost:${port}/test.html`);
-    yield untilSelector("#waiting > p");
+    yield waitUntil("#waiting > p");
   });
   const {window} = new JSDOM(html);
   t.is(
     "Hello Waiting World!",
     window.document.querySelector("#waiting > p").textContent,
   );
+});
+
+test("can wait until a timeout passes", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* waitForSelector({browse, waitUntil}) {
+    yield browse(`http://localhost:${port}/test.html`);
+    yield waitUntil(2000);
+  });
+  const {window} = new JSDOM(html);
+  t.is(
+    "Hello Waiting World!",
+    window.document.querySelector("#waiting > p").textContent,
+  );
+});
+
+test("can wait until a predicate holds", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* waitForSelector({browse, waitUntil}) {
+    yield browse(`http://localhost:${port}/test.html`);
+    yield waitUntil(() => !!document.querySelector("#waiting > p"));
+  });
+  const {window} = new JSDOM(html);
+  t.is(
+    "Hello Waiting World!",
+    window.document.querySelector("#waiting > p").textContent,
+  );
+});
+
+test("can scroll an element a single time", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* scrollElement({browse, scroll}) {
+    const html = yield browse(`http://localhost:${port}/scroll.html`);
+    const {window} = new JSDOM(html);
+    t.is(20, window.document.querySelectorAll("#infinite-list > li").length);
+    yield scroll("#infinite-list");
+  });
+  const {window} = new JSDOM(html);
+  t.is(40, window.document.querySelectorAll("#infinite-list > li").length);
+});
+
+test("can scroll an element multiple times", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* scrollElement({browse, scroll}) {
+    const html = yield browse(`http://localhost:${port}/scroll.html`);
+    const {window} = new JSDOM(html);
+    t.is(20, window.document.querySelectorAll("#infinite-list > li").length);
+    yield scroll("#infinite-list", {times: 3});
+  });
+  const {window} = new JSDOM(html);
+  t.is(60, window.document.querySelectorAll("#infinite-list > li").length);
 });
