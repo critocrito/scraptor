@@ -32,3 +32,16 @@ test("fill text into an input field", async (t) => {
     );
   });
 });
+
+test("can wait until a selector appears", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* waitForSelector({browse, untilSelector}) {
+    yield browse(`http://localhost:${port}/test.html`);
+    yield untilSelector("#waiting > p");
+  });
+  const {window} = new JSDOM(html);
+  t.is(
+    "Hello Waiting World!",
+    window.document.querySelector("#waiting > p").textContent,
+  );
+});

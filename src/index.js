@@ -1,4 +1,3 @@
-// export * from "./browser";
 import {ofP} from "dashp";
 import {curry2, curry3} from "@critocrito/curry";
 import puppeteer from "puppeteer";
@@ -6,6 +5,13 @@ import puppeteer from "puppeteer";
 const browse = curry2("browse", async (url, page) => {
   await page.goto(url);
 });
+
+const untilSelector = (
+  selector,
+  opts = {timeout: 30000, visible: false, hidden: false},
+) => async (page) => {
+  await page.waitForSelector(selector, opts);
+};
 
 const screenshot = curry2("screenshot", async (target, page) => {
   await page.screenshot({path: target, fullPage: true});
@@ -26,6 +32,7 @@ const input = curry3("input", async (selector, value, page) => {
 
 const api = {
   browse,
+  untilSelector,
   screenshot,
   input,
 };

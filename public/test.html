@@ -1,5 +1,14 @@
 <html>
   <body>
     <h1>Hello World!</h1>
+    <div id="waiting">
+    </div>
   </body>
+  <script type="application/javascript">
+    window.onload = () => setTimeout(() => {
+      const p = document.createElement("p");
+      p.textContent = "Hello Waiting World!";
+      document.querySelector("#waiting").appendChild(p);
+    }, 1000);
+  </script>
 </html>
