@@ -3,5 +3,17 @@
     <div id="input-field">
       <input type="text" value="Hello World">
     </div>
+    <div id="click-field">
+      <button type="button">Click Me</button>
+    </div>
   </body>
+  <script>
+    const clickHandler = () => {
+      const el = document.querySelector("#click-field");
+      const item = document.createElement("p");
+      item.textContent = "Clicked!";
+      el.appendChild(item);
+    }
+    document.querySelector("#click-field > button").onclick = clickHandler;
+  </script>
 </html>

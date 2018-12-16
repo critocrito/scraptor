@@ -25,6 +25,8 @@ const input = (selector, value) => (page) =>
     value,
   );
 
+const click = (selector) => (page) => page.click(selector);
+
 const scroll = (selector, opts) => async (page) => {
   const {times, timeout} = Object.assign({times: 1, timeout: 1000}, opts);
   const scroller = async () => {
@@ -47,6 +49,7 @@ const api = {
   waitUntilLoaded,
   screenshot,
   input,
+  click,
   scroll,
 };
 

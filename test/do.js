@@ -34,6 +34,18 @@ test("fill text into an input field", async (t) => {
   });
 });
 
+test("can click an element", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* scrollElement({browse, click}) {
+    const html = yield browse(`http://localhost:${port}/forms.html`);
+    const {window} = new JSDOM(html);
+    t.is(0, window.document.querySelectorAll("#click-field > p").length);
+    yield click("#click-field > button");
+  });
+  const {window} = new JSDOM(html);
+  t.is(1, window.document.querySelectorAll("#click-field > p").length);
+});
+
 test("can wait until a selector appears", async (t) => {
   const {port} = t.context;
   const html = await Do(function* waitForSelector({browse, waitUntil}) {
