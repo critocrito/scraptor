@@ -1,4 +1,5 @@
 import {ofP, collectP} from "dashp";
+import {JSDOM} from "jsdom";
 import puppeteer from "puppeteer";
 
 const html = (selector = "body") => (page) =>
@@ -32,7 +33,28 @@ const input = (selector, value) => (page) =>
     value,
   );
 
-const click = (selector) => (page) => page.click(selector);
+const click = (selector) => async (page) => {
+  await page.click(selector);
+};
+
+const clickToLoad = (selector) => async (page) => {
+  await Promise.all([waitUntilLoaded()(page), click(selector)(page)]);
+};
+
+const clickUntil = (selector, pred, opts) => async (page) => {
+  const {timeout} = Object.assign({timeout: 500}, opts);
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const dom = await html()(page);
+    // eslint-disable-next-line no-await-in-loop
+    if (await pred(dom)) break;
+    // eslint-disable-next-line no-await-in-loop
+    await click(selector)(page);
+    // eslint-disable-next-line no-await-in-loop
+    await waitUntil(timeout)(page);
+  }
+};
 
 const scroll = (selector, opts) => async (page) => {
   const {times, timeout} = Object.assign({times: 1, timeout: 1000}, opts);
@@ -71,6 +93,8 @@ const api = {
   screenshot,
   input,
   click,
+  clickToLoad,
+  clickUntil,
   scroll,
   scrollUntil,
 };
@@ -83,8 +107,9 @@ export const Do = async (G, {headless} = {headless: true}) => {
   const page = await browser.newPage();
   const generator = G(api);
   let data = "";
-
+  let counter = 0;
   const chain = async (nextG) => {
+    console.log(counter);
     const {done, value} = await nextG.next(data);
     if (done) {
       await browser.close();
@@ -92,7 +117,7 @@ export const Do = async (G, {headless} = {headless: true}) => {
     }
     await value(page);
     data = await html()(page);
-
+    counter += 1;
     return chain(nextG);
   };
 
