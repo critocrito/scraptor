@@ -1,9 +1,9 @@
 import {ofP, collectP} from "dashp";
 import puppeteer from "puppeteer";
 
-const body = (page) =>
+const html = (selector = "body") => (page) =>
   page.$eval(
-    "body",
+    selector,
     /* istanbul ignore next */
     (el) => el.innerHTML,
   );
@@ -55,9 +55,9 @@ const scrollUntil = (selector, pred, opts) => async (page) => {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     // eslint-disable-next-line no-await-in-loop
-    const html = await body(page);
+    const dom = await html()(page);
     // eslint-disable-next-line no-await-in-loop
-    if (await pred(html)) break;
+    if (await pred(dom)) break;
     // eslint-disable-next-line no-await-in-loop
     await scroll(selector, {times: 1, timeout})(page);
   }
@@ -65,6 +65,7 @@ const scrollUntil = (selector, pred, opts) => async (page) => {
 
 const api = {
   browse,
+  html,
   waitUntil,
   waitUntilLoaded,
   screenshot,
@@ -90,7 +91,7 @@ export const Do = async (G, {headless} = {headless: true}) => {
       return Promise.resolve(data);
     }
     await value(page);
-    data = await body(page);
+    data = await html()(page);
 
     return chain(nextG);
   };
