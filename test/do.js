@@ -108,3 +108,20 @@ test("can scroll an element multiple times", async (t) => {
   const {window} = new JSDOM(html);
   t.is(60, window.document.querySelectorAll("#infinite-list > li").length);
 });
+
+test("can scroll an element until a predicate holds", async (t) => {
+  const {port} = t.context;
+  const html = await Do(function* scrollElement({browse, scrollUntil}) {
+    const html = yield browse(`http://localhost:${port}/scroll.html`);
+    const {window} = new JSDOM(html);
+    t.is(20, window.document.querySelectorAll("#infinite-list > li").length);
+    yield scrollUntil("#infinite-list", (html) => {
+      const {window} = new JSDOM(html);
+      return (
+        window.document.querySelectorAll("#infinite-list > li").length >= 100
+      );
+    });
+  });
+  const {window} = new JSDOM(html);
+  t.true(window.document.querySelectorAll("#infinite-list > li").length >= 100);
+});

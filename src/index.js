@@ -1,6 +1,13 @@
 import {ofP, collectP} from "dashp";
 import puppeteer from "puppeteer";
 
+const body = (page) =>
+  page.$eval(
+    "body",
+    /* istanbul ignore next */
+    (el) => el.innerHTML,
+  );
+
 const waitUntilLoaded = (opts = {}) => (page) =>
   page.waitForNavigation(Object.assign({waitUntil: "load"}, opts));
 
@@ -43,6 +50,19 @@ const scroll = (selector, opts) => async (page) => {
   await collectP(scroller, range);
 };
 
+const scrollUntil = (selector, pred, opts) => async (page) => {
+  const {timeout} = Object.assign({timeout: 1000}, opts);
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const html = await body(page);
+    // eslint-disable-next-line no-await-in-loop
+    if (await pred(html)) break;
+    // eslint-disable-next-line no-await-in-loop
+    await scroll(selector, {times: 1, timeout})(page);
+  }
+};
+
 const api = {
   browse,
   waitUntil,
@@ -51,6 +71,7 @@ const api = {
   input,
   click,
   scroll,
+  scrollUntil,
 };
 
 export const Do = async (G, {headless} = {headless: true}) => {
@@ -71,8 +92,7 @@ export const Do = async (G, {headless} = {headless: true}) => {
       return Promise.resolve(cleanHtml(data));
     }
     await value(page);
-    /* istanbul ignore next */
-    data = await page.$eval("body", (elem) => elem.innerHTML);
+    data = await body(page);
 
     return chain(nextG);
   };
